@@ -1,45 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvue <mvue@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/05 23:05:31 by mvue              #+#    #+#             */
-/*   Updated: 2021/12/05 23:45:17 by mvue             ###   ########.fr       */
+/*   Created: 2021/12/05 23:29:39 by mvue              #+#    #+#             */
+/*   Updated: 2021/12/05 23:40:55 by mvue             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#ifndef LIBFT_H
+# define LIBFT_H
+#define BUF_SIZE 10
 
-void	ft_putstr(char *str)
-{
-	while (*str)
-		write(1, str++, 1);
-}
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
-void	get_next_line(int fd)
-{
-	int		read;
-	char	buf(BUF_SIZE);
 
-	ret = read(fd, buf, BUFSIZE);
-}
-
-int main(void)
-{
-	int	fd;
-
-	fd = open("get_next_line.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putstr("open() error");
-		return (1);
-	}
-	if (close(fd) == -1)
-	{
-		ft_putstr("close() error");
-		return (1);
-	}
-	return (0);
-}
+#endif
