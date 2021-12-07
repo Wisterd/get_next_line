@@ -6,7 +6,7 @@
 /*   By: mvue <mvue@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 23:05:31 by mvue              #+#    #+#             */
-/*   Updated: 2021/12/06 01:03:04 by mvue             ###   ########.fr       */
+/*   Updated: 2021/12/07 15:50:41 by mvue             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,26 @@
 void	get_next_line(int fd)
 {
 	int			ret;
-	char		buf[BUF_SIZE + 1];
+	int			deb;
+	int			fin;
+	char		buf[BUFFER_SIZE + 1];
+	char		*tmp;
 
 	ret = 1;
+	deb = 0;
 	while (ret)
 	{
-		ret = read(fd, buf, BUF_SIZE);
+		ret = read(fd, buf, BUFFER_SIZE);
+		printf("%d\n", ret);
 		buf[ret] = '\0';
-		ft_putstr(buf);
+		fin = deb;
+		while (buf[fin] && buf[fin] != '\n')
+			fin++;
+		//printf(" deb = %d\n fin = %d\n", deb, fin);
+		tmp = ft_substr(buf, deb, fin + 1);
+		ft_putstr(tmp);
+		//if (buf[fin] == '\n')
+		//	ft_putstr("new line ");
 	}
 }
 
