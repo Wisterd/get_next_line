@@ -6,7 +6,7 @@
 /*   By: mvue <mvue@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 23:05:31 by mvue              #+#    #+#             */
-/*   Updated: 2021/12/20 11:53:58 by mvue             ###   ########.fr       */
+/*   Updated: 2021/12/20 11:59:52 by mvue             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_add_str(char *buf, char *full_str, int *flag, char **extra_read)
 	char		*str_cpl;
 
 	i = 0;
-	while (buf[i] != '\n' && buf[i] && buf[i] != EOF)
+	while (buf[i] != '\n' && buf[i])
 		i++;
 	if (i == ft_strlen(buf))
 	{
@@ -50,7 +50,7 @@ char	*ft_add_str(char *buf, char *full_str, int *flag, char **extra_read)
 
 char	*get_next_line(int fd)
 {
-	static int			ret;
+	int					ret;
 	static char			buf[BUFFER_SIZE + 1];
 	static char			*extra_read = NULL;
 	char				*full_str;

@@ -6,7 +6,7 @@
 /*   By: mvue <mvue@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 01:01:34 by mvue              #+#    #+#             */
-/*   Updated: 2021/12/19 19:32:53 by mvue             ###   ########.fr       */
+/*   Updated: 2021/12/20 12:00:13 by mvue             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen(const char *str)
 	size_t	i;
 
 	i = 0;
-	while (str[i] && str[i] != EOF)
+	while (str[i])
 		i++;
 	return (i);
 }
