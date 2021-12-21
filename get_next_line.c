@@ -5,103 +5,84 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvue <mvue@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/05 23:05:31 by mvue              #+#    #+#             */
-/*   Updated: 2021/12/20 11:59:52 by mvue             ###   ########.fr       */
+/*   Created: 2021/12/21 17:01:46 by mvue              #+#    #+#             */
+/*   Updated: 2021/12/21 19:07:29 by mvue             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/*
-char	*free_buff(char *buf)
+char	*ft_get_extra_read(char *line_read)
 {
-	
-}
-*/
+	char	*extra_read;
+	int		i;
+	int		j;
 
-char	*ft_add_str(char *buf, char *full_str, int *flag, char **extra_read)
+	i = -1;
+	j = 0;
+	while (line_read[++i] && line_read[i] != '\n')
+		j++;
+	if (!line_read[i])
+	{
+		free(line_read);
+		return (NULL);
+	}
+	while (line_read[i])
+		i++;
+	extra_read = malloc(sizeof(char) * (i - j + 2));
+	if (!extra_read)
+	{
+		free(line_read);
+		return (NULL);
+	}
+	ft_strlcpy(extra_read, line_read + j + 1, i - j + 1);
+	free(line_read);
+	return (extra_read);
+}
+
+char	*ft_clean_line(char	*line_read)
 {
-	size_t		i;
-	char		*str_cpl;
+	char	*clean_line;
+	int		i;
 
 	i = 0;
-	while (buf[i] != '\n' && buf[i])
+	if (!line_read[i])
+		return (NULL);
+	while (line_read[i] && line_read[i] != '\n')
 		i++;
-	if (i == ft_strlen(buf))
-	{
-		str_cpl = ft_strdup(buf);
-		full_str = ft_strjoin(full_str, str_cpl);
-		if (*extra_read)
-		{
-			free(*extra_read);
-			*extra_read = NULL;
-		}
-	}
+	clean_line = malloc(sizeof(char) * (i + 2));
+	if (!clean_line)
+		return (NULL);
+	if (line_read[i] == '\n')
+		ft_strlcpy(clean_line, line_read, i + 2);
 	else
-	{
-		str_cpl = ft_substr(buf, 0, i + 1);
-		*extra_read = ft_substr(buf, i + 1, ft_strlen(buf) - (i + 1));
-		full_str = ft_strjoin(full_str, str_cpl);
-		*flag = 1;
-	}
-	free(str_cpl);
-	return (full_str);
+		ft_strlcpy(clean_line, line_read, i + 1);
+	return (clean_line);
 }
 
 char	*get_next_line(int fd)
 {
-	int					ret;
-	static char			buf[BUFFER_SIZE + 1];
-	static char			*extra_read = NULL;
-	char				*full_str;
-	int					flag;
+	static char	buff[BUFFER_SIZE + 1];
+	int			bytes_read;
+	char		*line_read;
+	char		*clean_line;
+	static char	*extra_read = NULL;
 
-	full_str = "";
-	flag = 0;
-	if (!extra_read)
+	if (fd < 0 || BUFFER_SIZE < 1)
+		return (NULL);
+		bytes_read = 1;
+	while (!ft_strchr(extra_read, '\n') && bytes_read != 0)
 	{
-		ret = read(fd, buf, BUFFER_SIZE);
-		buf[ret] = '\0';
+		bytes_read = read(fd, buff, BUFFER_SIZE);
+		if (bytes_read == -1)
+			return (NULL);
+		buff[bytes_read] = '\0';
+		extra_read = ft_strjoin(extra_read, buff);
 	}
-	else
-		full_str = ft_add_str(extra_read, full_str, &flag, &extra_read);
-	while (flag == 0 && ret)
-	{
-		full_str = ft_add_str(buf, full_str, &flag, &extra_read);
-		ret = read(fd, buf, BUFFER_SIZE);
-		buf[ret] = '\0';
-	}
-	if (!*full_str)
-	{
-		if (extra_read)
-			free(extra_read);
-		return(NULL);
-	}
-	return (full_str);
-}
-
-int	main(void)
-{
-	int	fd;
-	char *res;
-
-	res = "bonjour";
-	fd = open("get_next_line.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		printf("open() error");
-		return (1);
-	}
-	while(res)
-	{
-		res = get_next_line(fd);
-		printf("%s", res);
-	}
-	free(res);
-	if (close(fd) == -1)
-	{
-		printf("close() error");
-		return (1);
-	}
-	return (0);
+	line_read = extra_read;
+	if (!line_read)
+		return (NULL);
+	clean_line = ft_clean_line(line_read);
+	extra_read = ft_get_extra_read(line_read);
+	return (clean_line);
 }
